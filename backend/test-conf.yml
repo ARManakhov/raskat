@@ -1,0 +1,12 @@
+apiVersion: v1
+type: app
+name: simple java app
+image:  dev.sirosh/crp8c8qbh52hge5basdms/hello-world:latest
+virtualization: docker
+network:
+  ports:
+    - port: 80
+      protocol: TCP
+      targetPort: 8089
+cpu: 0.2
+memory: 1024Mi
