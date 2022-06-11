@@ -16,7 +16,7 @@ public class AppController {
     private final AppService appService;
 
     @PostMapping
-    public Result<AppDto> create(@PathVariable String environment, @RequestBody AppDto app) throws IOException {
+    public Result<List<AppDto>> create(@PathVariable String environment, @RequestBody List<AppDto> app) throws IOException {
         return appService.create(environment, app);
     }
 

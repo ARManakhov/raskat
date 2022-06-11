@@ -1,5 +1,4 @@
 <template>
-  <NavBar v-bind:path="path"/>
   <div class="container py-5 h-100 col-4">
     <H1 class="mb-4">Sign in</H1>
     <form>
@@ -42,7 +41,6 @@ export default {
   name: 'App',
   data() {
     return {
-      path: ["services", "b"],
     }
   }
 }

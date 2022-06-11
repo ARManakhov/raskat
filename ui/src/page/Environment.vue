@@ -1,5 +1,5 @@
 <template>
-  <NavBar v-bind:path="path"/>
+  <div>stand by</div>
 
 </template>
 
@@ -9,7 +9,6 @@ export default {
   name: 'App',
   data(){
     return{
-      path:["services", "b"],
     }
   }
 }

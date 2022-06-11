@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.List;
 
 public interface AppService {
-    Result<AppDto> create(String environment, AppDto appDto) throws IOException;
+    Result<List<AppDto>> create(String environment, List<AppDto> appDto) throws IOException;
 
     Result<Void> delete(String environment, String name) throws IOException;
 

@@ -1,52 +1,84 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="#">Raskat</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <template v-for="(p) in path" :key="p">
-            <li class="nav-item">
-              <a class="nav-link disabled">></a>
+  <div class="wrapper">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">Raskat</a>
+        <div class="collapse navbar-collapse">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <template v-for="(p) in pathArray" :key="p">
+              <li class="nav-item">
+                <a class="nav-link disabled">></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="#">{{ decodeURI(p) }}</a>
+              </li>
+            </template>
+          </ul>
+          <ul class="navbar-nav navbar-right ml-auto">
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
+                 aria-expanded="false">Create</a>
+              <ul class="dropdown-menu">
+                <li>
+                  <a class="dropdown-item" href="#">Manually</a>
+                </li>
+                <li>
+                  <input type="file" id="createIn" accept=".json" v-on:change="handleFiles" style="display: none;">
+                  <label class="dropdown-item" for="createIn">Import</label>
+                </li>
+              </ul>
             </li>
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="#">{{ p }}</a>
+              <a class="nav-link">Account</a>
             </li>
-          </template>
-        </ul>
-        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-          <li>
-            <a class="nav-link active" aria-current="page" href="#">Add</a>
-          </li>
-          <li class="d-flex dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Administration
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <li><router-link class="dropdown-item" to="/settings">Settings</router-link></li>
-              <li><router-link class="dropdown-item" to="/virtualization">Virtualization</router-link></li>
-              <li><router-link class="dropdown-item" to="/service">Services</router-link></li>
-            </ul>
-          </li>
-        </ul>
+          </ul>
+        </div>
       </div>
-    </div>
-  </nav>
-  <router-view></router-view>
+    </nav>
+    <router-view></router-view>
+  </div>
 </template>
 
 <script>
 export default {
-  name: 'HelloWorld',
-  props: {
-    path: []
+  name: 'NavBar',
+  data() {
+    return {
+      backendUrl: process.env.VUE_APP_BACKEND_HOST,
+    }
+  },
+  computed: {
+    pathArray() {
+      return this.$router.currentRoute.value.fullPath
+          .split('/')
+          .filter(i => {
+            return i.length > 0;
+          })
+    }
+  },
+  methods: {
+    handleFiles(e) {
+      console.log(e);
+      const files = e.target.files;
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        fetch(this.backendUrl + '/rest/environment/' + this.$router.currentRoute.value.params.env + '/app',
+            {
+              method: 'POST',
+              body: e.target.result,
+              headers: {
+                'Content-Type': 'application/json'
+              }
+            })
+            .then(r => r.json())
+        // .catch(e =>  new bootstrap.Alert(e))
+      };
+      reader.readAsText(files[0]);
+    }
   }
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 
 </style>

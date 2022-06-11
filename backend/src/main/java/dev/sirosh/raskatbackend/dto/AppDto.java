@@ -13,11 +13,9 @@ import java.util.Map;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AppDto {
-    private String environment;
-    private String driver;
     private String name;
+    private String description;
     private List<ContainerDto> container;
-    private List<PortDto> ports;
     private Map<String, String> labels;
-    private List<VolumeDto> volumes;
+    private VolumeDto volumeDto;
 }

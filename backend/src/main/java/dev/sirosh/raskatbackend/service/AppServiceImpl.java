@@ -16,9 +16,11 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 // TODO: 31.05.2022 handle actuators response
 // TODO: 31.05.2022 add synchronization
+
 /**
  * this class deal with database interaction and actuators form drivers to start apps in particular environments
  */
@@ -61,14 +63,22 @@ public class AppServiceImpl implements AppService {
      * @throws IOException
      */
     @Override
-    public Result<AppDto> create(String environment, AppDto appDto) throws IOException {
+    public Result<List<AppDto>> create(String environment, List<AppDto> appDto) throws IOException {
         Environment environmentEntity = environmentService.getEntity(environment);
-        App app = appMapper.toEntity(appDto);
-        updateApp(environment, appMapper.toEntity(appDto));
         AppActuator actuator = getActuator(environmentEntity);
-        actuator.modify(app);
-        actuator.start(app);
-        return Result.successResult(appMapper.toDto(app));
+
+        List<AppDto> res = appDto.stream().map(a -> {
+            App app = appMapper.toEntity(a);
+            try {
+                actuator.modify(app);
+                actuator.start(app);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            updateApp(environment, app);
+            return appMapper.toDto(app);
+        }).collect(Collectors.toList());
+        return Result.successResult(res);
     }
 
     /**

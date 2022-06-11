@@ -1,36 +1,32 @@
 import {createRouter, createWebHistory} from 'vue-router'
 import appList from '@/page/AppList.vue'
+import app from '@/page/App.vue'
 import environmentList from "@/page/EnvironmentList.vue";
 import settings from "@/page/Settings.vue";
 import environment from "@/page/Environment.vue";
-import service from "@/page/App.vue";
 import auth from "@/page/Auth.vue";
 import register from "@/page/Register";
 
 const routes = [
     {
-        path: '/app',
+        path: '/environment/:env/app',
         component: appList
     },
     {
-        path: '/app/:env',
-        component: appList
+        path: '/environment/:env/app/:app',
+        component: app
     },
     {
         path: '/environment',
         component: environmentList
     },
     {
+        path: '/environment/:env',
+        component: environment
+    },
+    {
         path: '/settings',
         component: settings
-    },
-    {
-        path: '/app/:name',
-        component: service
-    },
-    {
-        path: '/app/:name',
-        component: environment
     },
     {
         path: '/auth',

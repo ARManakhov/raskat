@@ -18,6 +18,11 @@ services:
     networks:
       raskat_net:
         ipv4_address: 172.20.0.12
+  mongo:
+    image: mongo
+    networks:
+      raskat_net:
+        ipv4_address: 172.20.0.13
 networks:
   raskat_net:
     ipam:

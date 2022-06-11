@@ -31,3 +31,15 @@ c
 3src/main/java/dev/sirosh/raskat/cli/dto/Result.java,e/9/e91d11969d3d3ae115a8ca3753723639838843ad
 k
 ;src/main/java/dev/sirosh/raskat/cli/dto/EnvironmentDto.java,e/4/e49cb62d3e86000a9a1c8d8f329ed9fb56567139
+p
+@src/main/java/dev/sirosh/raskat/cli/client/BackendAppClient.java,8/e/8eb85505abe8467e8c109631b8c0a48981209966
+p
+@src/main/java/dev/sirosh/raskat/cli/client/RequestException.java,2/9/295ca3777ae2a4d0aee9c9415cceafe31fe7d087
+j
+:src/main/java/dev/sirosh/raskat/cli/cli/AppGetCommand.java,2/d/2d974ab76350d2d98fd4baef2b29757b36804c53
+g
+7src/main/java/dev/sirosh/raskat/cli/cli/AppCommand.java,d/c/dc814100e18c5abd8b11fa09bbe2490e2989aef7
+g
+7src/main/java/dev/sirosh/raskat/cli/cli/EnvCommand.java,d/c/dc2f3621983108e068dc0b30c3baa53d84092c06
+7
+pom.xml,4/4/442292b8a7efeabbe4cc176709b833b1792140ec

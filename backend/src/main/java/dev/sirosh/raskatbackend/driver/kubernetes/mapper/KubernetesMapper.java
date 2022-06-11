@@ -1,6 +1,7 @@
 package dev.sirosh.raskatbackend.driver.kubernetes.mapper;
 
 import dev.sirosh.raskatbackend.entity.App;
+import io.kubernetes.client.openapi.models.V1DeploymentSpec;
 import io.kubernetes.client.openapi.models.V1Pod;
 import io.kubernetes.client.openapi.models.V1PodList;
 import org.mapstruct.Mapper;
@@ -21,4 +22,6 @@ public interface KubernetesMapper {
 //    @Mapping(source = "container", target = "healthCheck")
 //    @Mapping(source = "spec.volumes", target = "volumes")
     App toDto(V1Pod appDtoList);
+
+    V1DeploymentSpec toDeployment(App app);
 }
