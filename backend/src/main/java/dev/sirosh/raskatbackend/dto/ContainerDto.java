@@ -11,8 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 public class ContainerDto {
     private String image;
-    private String containerId;
-//    private Map<String, String> environment;
+    private String name;
     private List<ExecDto> exec;
     private List<PortDto> ports;
     private List<VolumeDto> volumes;

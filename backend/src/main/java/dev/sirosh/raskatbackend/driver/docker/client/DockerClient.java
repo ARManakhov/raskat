@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.dockerjava.core.DefaultDockerClientConfig;
 import com.github.dockerjava.core.DockerClientConfig;
+import com.github.dockerjava.core.DockerClientImpl;
 import com.github.dockerjava.httpclient5.ApacheDockerHttpClient;
 import com.github.dockerjava.transport.DockerHttpClient;
 import dev.sirosh.raskatbackend.driver.docker.dto.request.DockerCreateContainerRequestDto;
@@ -21,6 +22,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class DockerClient {
     private final ObjectMapper objectMapper;
+
+    private com.github.dockerjava.api.DockerClient getClient(EnvironmentConfig environmentConfig) throws IOException {
+        return DockerClientImpl.getInstance(createConfig(environmentConfig), connect(environmentConfig));
+    }
 
     protected DockerHttpClient connect(EnvironmentConfig environment) throws IOException {
         DockerClientConfig config = createConfig(environment);
@@ -66,12 +71,12 @@ public class DockerClient {
     }
 
 
-    public DockerCreateResponseDto containerCreate(DockerCreateContainerRequestDto appDto, EnvironmentConfig environment) throws IOException {
+    public DockerCreateResponseDto containerCreate(String containerName, DockerCreateContainerRequestDto containerDto, EnvironmentConfig environment) throws IOException {
         DockerHttpClient.Request request = DockerHttpClient.Request.builder()
                 .method(DockerHttpClient.Request.Method.POST)
                 .putHeader("Content-type", "application/json")
-                .path("/containers/create")
-                .bodyBytes(objectMapper.writeValueAsBytes(appDto))
+                .path("/containers/create?name=" + containerName)
+                .bodyBytes(objectMapper.writeValueAsBytes(containerDto))
                 .build();
         DockerHttpClient connection = connect(environment);
         DockerHttpClient.Response response = connection.execute(request);

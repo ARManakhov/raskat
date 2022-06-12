@@ -15,6 +15,8 @@ import java.util.List;
 @NoArgsConstructor
 public class Container {
     private String image;
-    private String containerId;
+    private String name;
     private List<Exec> exec;
+    private List<Port> ports;
+    private List<Volume> volumes;
 }

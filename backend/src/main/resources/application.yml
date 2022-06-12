@@ -11,6 +11,8 @@ spring:
       port: 27017
   jackson:
     default-property-inclusion: non_null
+    serialization:
+      FAIL_ON_EMPTY_BEANS: false
 logging:
   level:
     org:

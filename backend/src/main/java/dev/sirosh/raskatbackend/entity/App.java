@@ -18,11 +18,10 @@ import java.util.Map;
 public class App {
     @Id
     private String name;
+    private String description;
     private boolean enabled;
-    // TODO: 29.05.2022 app can have more than one container, make it list
     private List<Container> container;
-    private List<Port> ports;
     private Map<String, String> labels;
-    private List<Volume> volumes;
     private HealthCheck healthCheck;
+    private List<Volume> volumes;
 }

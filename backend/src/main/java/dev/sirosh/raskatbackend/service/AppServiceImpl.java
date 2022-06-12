@@ -70,8 +70,8 @@ public class AppServiceImpl implements AppService {
         List<AppDto> res = appDto.stream().map(a -> {
             App app = appMapper.toEntity(a);
             try {
-                actuator.modify(app);
-                actuator.start(app);
+                actuator.modify(app, environmentEntity.getConfig());
+                actuator.start(app, environmentEntity.getConfig());
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -96,7 +96,7 @@ public class AppServiceImpl implements AppService {
                 .filter(a -> a.getName().equals(name))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("can't find app " + name + " in environment " + environment));
-        boolean success = getActuator(environmentEntity).delete(app);
+        boolean success = getActuator(environmentEntity).delete(app, environmentEntity.getConfig());
         mongoTemplate.updateMulti(new Query(Criteria.where("_id").is(environment)),
                 new Update().pull("apps", name),
                 Environment.class);
@@ -149,7 +149,7 @@ public class AppServiceImpl implements AppService {
                 .filter(a -> a.getName().equals(name))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("can't find app " + name + " in environment " + environment));
-        getActuator(environmentEntity).start(app);  // TODO: 31.05.2022 save state
+        getActuator(environmentEntity).start(app, environmentEntity.getConfig());  // TODO: 31.05.2022 save state
         updateApp(environment, app);
         return Result.successResult();
     }
@@ -169,7 +169,7 @@ public class AppServiceImpl implements AppService {
                 .filter(a -> a.getName().equals(name))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("can't find app " + name + " in environment " + environment));
-        getActuator(environmentEntity).stop(app); // TODO: 31.05.2022 save state
+        getActuator(environmentEntity).stop(app, environmentEntity.getConfig()); // TODO: 31.05.2022 save state
         updateApp(environment, app);
         return Result.successResult();
     }

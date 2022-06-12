@@ -1,5 +1,6 @@
 package dev.sirosh.raskatbackend.dto;
 
+import dev.sirosh.raskatbackend.entity.HealthCheck;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,7 +16,9 @@ import java.util.Map;
 public class AppDto {
     private String name;
     private String description;
+    private boolean enabled;
     private List<ContainerDto> container;
     private Map<String, String> labels;
-    private VolumeDto volumeDto;
+    private HealthCheck healthCheck;
+    private List<VolumeDto> volumes;
 }

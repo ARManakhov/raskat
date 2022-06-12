@@ -13,4 +13,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @NoArgsConstructor
 public class EnvironmentConfig {
     private String host;
+    private String username;
+    private String token;
 }
