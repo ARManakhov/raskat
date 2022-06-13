@@ -55,6 +55,8 @@ public interface KubernetesMapper {
     @Mapping(source = "image", target = "image")
     @Mapping(source = "name", target = "name")
     @Mapping(source = "ports", target = "ports")
+    @Mapping(source = "env", target = "env", qualifiedByName = "env")
+    @Mapping(source = "pullPolicy", target = "imagePullPolicy")
     V1Container toContainer(Container container);
 
     @Mapping(source = "destination", target = "containerPort")
@@ -66,11 +68,28 @@ public interface KubernetesMapper {
     @Mapping(source = "name", target = "metadata.name")
     @Mapping(source = "app", target = "spec.ports", qualifiedByName = "ports")
     @Mapping(source = "app", target = "spec.selector", qualifiedByName = "selector")
+    @Mapping(source = "app", target = "metadata.labels", qualifiedByName = "labels")
+    @Mapping(constant = "NodePort", target = "spec.type")
     V1Service toService(App app);
+
+    @Named("env")
+    default List<V1EnvVar> env(Map<String, String> env) {
+        if (env == null) {
+            return null;
+        }
+        return env.entrySet().stream()
+                .map(entry -> {
+                    V1EnvVar envVar = new V1EnvVar();
+                    envVar.setName(entry.getKey());
+                    envVar.setValue(entry.getValue());
+                    return envVar;
+                })
+                .collect(Collectors.toList());
+    }
 
     @Named("selector")
     default Map<String, String> serviceSelector(App app) {
-        return Collections.singletonMap("app.kubernetes.io/name", app.getName());
+        return Collections.singletonMap("app", app.getName());
     }
 
     @Named("ports")
@@ -79,6 +98,7 @@ public interface KubernetesMapper {
                 .flatMap(c -> c.getPorts().stream())
                 .map(p -> {
                     V1ServicePort sp = new V1ServicePort();
+//                    sp.setProtocol(p.getType().toString());
                     sp.setPort(p.getSource());
                     sp.setTargetPort(new IntOrString(p.getDestination()));
                     return sp;

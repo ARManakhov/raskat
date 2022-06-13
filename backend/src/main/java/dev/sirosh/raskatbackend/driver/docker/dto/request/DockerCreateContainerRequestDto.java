@@ -37,6 +37,8 @@ public class DockerCreateContainerRequestDto {
     private String stopSignal;
     private Integer stopTimeout;
     private HostConfig hostConfig;
+    private NetworkingConfig networkingConfig;
+
 
     @Data
     @Builder
@@ -104,5 +106,25 @@ public class DockerCreateContainerRequestDto {
     public static class RestartPolicy {
         private String name;
         private Integer maximumRetryCount;
+    }
+
+    @Data
+    @Builder
+    @RequiredArgsConstructor
+    @AllArgsConstructor
+    @JsonNaming(PropertyNamingStrategies.UpperCamelCaseStrategy.class)
+    public static class NetworkingConfig {
+        Map<String, Network> endpointsConfig;
+    }
+
+    @Data
+    @Builder
+    @RequiredArgsConstructor
+    @AllArgsConstructor
+    @JsonNaming(PropertyNamingStrategies.UpperCamelCaseStrategy.class)
+    public static class Network {
+        Map<String, String> IPAMConfig;
+        List<String> links;
+        List<String> aliases;
     }
 }
