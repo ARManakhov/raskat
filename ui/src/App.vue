@@ -35,11 +35,12 @@
         </div>
       </div>
     </nav>
-    <router-view></router-view>
+    <router-view @load="load"></router-view>
   </div>
 </template>
 
 <script>
+import bus from './bus.js'
 export default {
   name: 'NavBar',
   data() {
@@ -58,10 +59,10 @@ export default {
   },
   methods: {
     handleFiles(e) {
-      console.log(e);
       const files = e.target.files;
       const reader = new FileReader();
       reader.onload = (e) => {
+
         fetch(this.backendUrl + '/rest/environment/' + this.$router.currentRoute.value.params.env + '/app',
             {
               method: 'POST',
@@ -70,7 +71,12 @@ export default {
                 'Content-Type': 'application/json'
               }
             })
-            .then(r => r.json())
+            .then(r => {
+                  r.json()
+                  bus.emit('load')
+                }
+            )
+
         // .catch(e =>  new bootstrap.Alert(e))
       };
       reader.readAsText(files[0]);

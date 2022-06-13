@@ -15,8 +15,9 @@
 </template>
 
 <script>
-
+import bus from '../bus.js'
 export default {
+
   name: 'AppList',
   data() {
     return {
@@ -39,6 +40,7 @@ export default {
     }
   },
   created() {
+    bus.on("load", this.loadEnvironmentList)
     this.loadEnvironmentList();
   }
 }
